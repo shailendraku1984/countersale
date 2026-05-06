@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'CounterSale',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Counter Sale</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -256,8 +256,9 @@ return [
     |
     */
 
+    
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin/dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -327,6 +328,20 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
+		[
+            'text' => 'Role',
+            'url' => 'admin/rbac/roles',
+            'icon' => 'far fa-fw fa-file',
+            'label_color' => 'success',
+			'can'  => 'manage_roles',
+        ],
+		[
+            'text' => 'User',
+            'url' => 'admin/users',
+            'icon' => 'far fa-fw fa-file',
+            'label_color' => 'success',
+			'can'  => 'manage_users',
+        ], 
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
