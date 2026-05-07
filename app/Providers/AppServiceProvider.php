@@ -18,6 +18,12 @@ use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
+use App\Repositories\CmsRepository;
+use App\Repositories\Interfaces\CmsRepositoryInterface;
+
+use App\Repositories\WarehouseRepository;
+use App\Repositories\Interfaces\WarehouseRepositoryInterface;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,6 +53,18 @@ class AppServiceProvider extends ServiceProvider
 			UserRepositoryInterface::class,
 			UserRepository::class
 		);
+		
+		$this->app->bind(
+			CmsRepositoryInterface::class,
+			CmsRepository::class
+        );
+		
+		$this->app->bind(
+			WarehouseRepositoryInterface::class,
+			WarehouseRepository::class
+		);
+	
+	
 	}
 
  
@@ -63,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
 			if ($rbac->isSuperAdmin($user)) {
 				return true;
 			}
+			 
 
 			// Check permission
 			return $rbac->hasPermission($user, $ability);

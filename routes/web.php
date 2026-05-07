@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Rbac\RoleManagementController;
 use App\Http\Controllers\Admin\Rbac\UserRoleController;
 
+use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\Admin\WarehouseController;
+
 Route::prefix('admin')
     ->middleware(['auth'])
     ->group(function () {
@@ -28,6 +31,27 @@ Route::prefix('admin')
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)
             ->middleware('rbac:manage_users')
             ->names('admin.users');
+			
+			
+		// ✅ CMS MODULE (FIXED)
+        Route::resource('cms', \App\Http\Controllers\Admin\CmsController::class)
+            ->names('admin.cms');
+
+		// ✅ CMS MODULE (FIXED)
+        Route::resource('warehouse', \App\Http\Controllers\Admin\WarehouseController::class)
+            ->names('admin.warehouse');
+			
+		Route::get(
+			'get-states/{countryId}',
+			[WarehouseController::class, 'getStates']
+		)->name('get.states');
+
+		Route::get(
+			'get-cities/{stateId}',
+			[WarehouseController::class, 'getCities']
+		)->name('get.cities');
+ 
+	
 
         // RBAC
         Route::prefix('rbac')
@@ -44,6 +68,10 @@ Route::prefix('admin')
                 Route::get('/users/{user}/roles', [UserRoleController::class, 'show'])->name('rbac.users.roles');
                 Route::post('/users/{user}/roles', [UserRoleController::class, 'assignRole'])->name('rbac.users.roles.assign');
             });
+			
+		     
+			 
+	
     });
 
 /*

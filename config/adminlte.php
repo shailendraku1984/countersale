@@ -323,11 +323,20 @@ return [
         ],
         [
             'text' => 'pages',
-            'url' => 'admin/pages',
+            'url' => 'admin/cms',
             'icon' => 'far fa-fw fa-file',
             'label' => 4,
             'label_color' => 'success',
+			'can'  => 'manage_roles',
         ],
+		[
+            'text' => 'Warehouse',
+            'url' => 'admin/warehouse',
+            'icon' => 'far fa-fw fa-file',
+            'label_color' => 'success',
+			'can'  => 'manage_roles',
+        ],
+		
 		[
             'text' => 'Role',
             'url' => 'admin/rbac/roles',
