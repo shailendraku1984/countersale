@@ -8,14 +8,15 @@
     <div class="d-flex justify-content-between mb-3">
 
         <h2>Warehouse List</h2>
-
+        
+		@can('warehouse.create')
         <a
             href="{{ route('admin.warehouse.create') }}"
             class="btn btn-success"
         >
             Add Warehouse
         </a>
-
+        @endcan
     </div>
 
     <table class="table table-bordered">
@@ -40,7 +41,7 @@
 
                 <tr>
 
-                    <td>{{ $warehouse->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
 
                     <td>{{ $warehouse->warehouse_name }}</td>
 
@@ -53,14 +54,17 @@
                     <td>{{ $warehouse->city->name }}</td>
 
                     <td>
-
+                        
+						@can('warehouse.edit')
                         <a
                             href="{{ route('admin.warehouse.edit', $warehouse->id) }}"
                             class="btn btn-primary btn-sm"
                         >
                             Edit
                         </a>
+						@endcan
 
+                        @can('warehouse.delete')
                         <form
                             action="{{ route('admin.warehouse.destroy', $warehouse->id) }}"
                             method="POST"
@@ -75,7 +79,7 @@
                             >
                                 Delete
                             </button>
-
+                         @endcan 
                         </form>
 
                     </td>

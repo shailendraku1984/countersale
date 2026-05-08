@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWarehouseRequest;
 use App\Http\Requests\UpdateWarehouseRequest;
 
+
 class WarehouseController extends Controller
 {
     protected WarehouseService $service;
@@ -18,10 +19,12 @@ class WarehouseController extends Controller
         WarehouseService $service
     ) {
         $this->service = $service;
+		 
     }
 
     public function index()
     {
+		
         $warehouses = $this->service->getAll();
 
         return view(

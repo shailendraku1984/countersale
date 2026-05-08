@@ -23,7 +23,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('admin.users.create');
+		$roles = \App\Models\Role::where('name', '!=','super_admin')->get();
+        return view('admin.users.create', compact('roles'));
     }
 
     public function store(StoreUserRequest $request)
@@ -36,7 +37,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+		$roles = \App\Models\Role::where('name','!=','super_admin')->get();
+        return view('admin.users.edit',compact('user','roles'));
+
     }
 
     public function update(UpdateUserRequest $request, User $user)

@@ -21,7 +21,10 @@ class UserService implements UserServiceInterface
     public function createUser(array $data): User
     {
         $data['password'] = Hash::make($data['password']);
-        return $this->userRepository->create($data);
+		$user = $this->userRepository->create($data);
+	
+	    $user->roles()->sync([$data['role_id']]);
+        return $user;
     }
 
     public function updateUser(User $user, array $data): User
@@ -31,8 +34,10 @@ class UserService implements UserServiceInterface
         } else {
             unset($data['password']);
         }
-
-        return $this->userRepository->update($user, $data);
+		
+		$user = $this->userRepository->update($user,$data);
+	    $user->roles()->sync([$data['role_id']]);
+        return $user;
     }
 
     public function deleteUser(User $user): void

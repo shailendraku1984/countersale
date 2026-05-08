@@ -5,8 +5,9 @@
 @section('content')
 <h1>Roles</h1>
 
+@can('roles.manage')
 <a href="{{ route('rbac.roles.create') }}" class="btn btn-primary">Create Role</a>
-
+@endcan
 
 <table class="table mt-3">
     <thead>
@@ -27,7 +28,9 @@
                 </td>
 
                 <td>
+				    @can('roles.manage')
                     <a href="{{ route('rbac.roles.edit', $role) }}" class="btn btn-warning">Edit</a>
+					@endcan
                 </td>
             </tr>
         @endforeach

@@ -10,14 +10,13 @@ class RoleService implements RoleCheckerInterface
 {
     public function hasAdminAccess(User $user): bool
     {
-        return in_array($user->role, [
-            UserRole::SUPER_ADMIN->value,
-            UserRole::ADMIN->value
-        ]);
+		return $user->roles()->exists();
     }
 
     public function isSuperAdmin(User $user): bool
     {
-        return $user->role === UserRole::SUPER_ADMIN->value;
+		return $user->roles()
+            ->where('name', 'super_admin')
+            ->exists();
     }
 }

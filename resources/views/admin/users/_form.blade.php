@@ -19,3 +19,40 @@
         Leave blank to keep existing password (edit mode)
     </small>
 </div>
+
+<div class="mb-3">
+
+    <label>
+        Role
+    </label>
+
+    <select
+        name="role_id"
+        class="form-control"
+    >
+
+        <option value="">
+            Select Role
+        </option>
+
+        @foreach($roles as $role)
+
+            <option
+                value="{{ $role->id }}"
+                @selected(
+                    old(
+                        'role_id',
+                        optional(
+                            $user ?? null
+                        )->roles?->first()?->id
+                    ) == $role->id
+                )
+            >
+                {{ $role->name }}
+            </option>
+
+        @endforeach
+
+    </select>
+
+</div>

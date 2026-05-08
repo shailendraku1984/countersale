@@ -6,13 +6,14 @@
 
     <div class="d-flex justify-content-between mb-3">
         <h2>CMS List</h2>
-
+        @can('cms.create') 
         <a
             href="{{ route('admin.cms.create') }}"
             class="btn btn-success"
         >
             Add CMS
         </a>
+		@endcan
     </div>
 
     @if(session('success'))
@@ -49,14 +50,16 @@
                     </td>
 
                     <td>
-
+                        @can('cms.edit')
                         <a
                             href="{{ route('admin.cms.edit', $cms->id) }}"
                             class="btn btn-primary btn-sm"
                         >
                             Edit
                         </a>
+						@endcan
 
+                        @can('cms.delete')
                         <form
                             action="{{ route('admin.cms.destroy', $cms->id) }}"
                             method="POST"
@@ -74,6 +77,7 @@
                             </button>
 
                         </form>
+						@endcan
 
                     </td>
                 </tr>

@@ -316,25 +316,21 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
+         
         [
             'text' => 'pages',
             'url' => 'admin/cms',
             'icon' => 'far fa-fw fa-file',
             'label' => 4,
             'label_color' => 'success',
-			'can'  => 'manage_roles',
+			'can'  => 'cms.view',
         ],
 		[
             'text' => 'Warehouse',
             'url' => 'admin/warehouse',
             'icon' => 'far fa-fw fa-file',
             'label_color' => 'success',
-			'can'  => 'manage_roles',
+			'can'  => 'warehouse.view',
         ],
 		
 		[
@@ -342,15 +338,22 @@ return [
             'url' => 'admin/rbac/roles',
             'icon' => 'far fa-fw fa-file',
             'label_color' => 'success',
-			'can'  => 'manage_roles',
+			'can'  => 'roles.manage',
         ],
 		[
             'text' => 'User',
             'url' => 'admin/users',
             'icon' => 'far fa-fw fa-file',
             'label_color' => 'success',
-			'can'  => 'manage_users',
-        ], 
+			'can'  => 'users.view',
+        ],
+		[
+            'text' => 'Category',
+            'url' => 'admin/category',
+            'icon' => 'far fa-fw fa-file',
+            'label_color' => 'success',
+			'can'  => 'category.view',
+        ],		
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

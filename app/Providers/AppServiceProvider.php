@@ -24,6 +24,8 @@ use App\Repositories\Interfaces\CmsRepositoryInterface;
 use App\Repositories\WarehouseRepository;
 use App\Repositories\Interfaces\WarehouseRepositoryInterface;
 
+use App\Contracts\CustomRBACInterface;
+use App\Services\CustomRBACService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -63,7 +65,22 @@ class AppServiceProvider extends ServiceProvider
 			WarehouseRepositoryInterface::class,
 			WarehouseRepository::class
 		);
-	
+		
+		$this->app->bind(
+			CustomRBACInterface::class,
+			CustomRBACService::class
+		);
+		
+		$this->app->bind(
+			\App\Repositories\Contracts\CategoryRepositoryInterface::class,
+			\App\Repositories\CategoryRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\CategoryServiceInterface::class,
+			\App\Services\CategoryService::class
+		);
+
 	
 	}
 

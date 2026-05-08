@@ -11,9 +11,11 @@
 @include('admin.users._messages')
 
 <div class="mb-3">
+    @can('users.create')
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
         Add User
     </a>
+	@endcan
 </div>
 
 <table class="table table-bordered">
@@ -34,8 +36,11 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
                 <td>
+				    @can('users.edit')
                     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
-
+                    @endcan
+					
+					@can('users.delete')
                     <form action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
@@ -44,6 +49,7 @@
                             Delete
                         </button>
                     </form>
+					@endcan
                 </td>
             </tr>
         @empty

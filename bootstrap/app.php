@@ -14,21 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     
-	/*
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
-            'admin.access' => \App\Http\Middleware\AdminAccessMiddleware::class,
-        ]);
-    })
-    */
-	
+ 	
 	->withMiddleware(function ($middleware) {
-		$middleware->alias([
-			'auth' => \App\Http\Middleware\Authenticate::class,
-			'permission' => \App\Http\Middleware\PermissionMiddleware::class,
-			'rbac' => \App\Http\Middleware\RbacMiddleware::class,
-		]);
+    $middleware->alias([
+        'auth' => \App\Http\Middleware\Authenticate::class,
+    ]);
 	})
 	
     ->withExceptions(function (Exceptions $exceptions) {
