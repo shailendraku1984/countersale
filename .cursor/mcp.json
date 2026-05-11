@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "countersale": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}\\tools\\mcp-laravel\\index.mjs"],
+      "env": {
+        "LARAVEL_PROJECT_ROOT": "${workspaceFolder}",
+        "PHP_BIN": "E:\\xampp\\php\\php.exe"
+      }
+    }
+  }
+}
+
+
+

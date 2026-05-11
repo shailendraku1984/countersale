@@ -7,7 +7,8 @@ use App\Repositories\Interfaces\WarehouseRepositoryInterface;
 
 class WarehouseRepository implements WarehouseRepositoryInterface
 {
-    public function getAllPaginated()
+    /*
+	public function getAllPaginated()
     {
         return Warehouse::with([
             'country',
@@ -16,6 +17,18 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         ])
         ->latest()
         ->paginate(10);
+		
+		
+    }
+	*/
+	
+	
+	public function getAllPaginated(int $perPage = 10) {
+		
+    return Warehouse::query()->when(request('search'),
+            function ($query) {
+                $query->where('warehouse_name','like','%' . request('search') . '%');
+            })->paginate($perPage);
     }
 
     public function create(array $data)

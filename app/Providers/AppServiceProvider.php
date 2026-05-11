@@ -27,6 +27,9 @@ use App\Repositories\Interfaces\WarehouseRepositoryInterface;
 use App\Contracts\CustomRBACInterface;
 use App\Services\CustomRBACService;
 
+use Illuminate\Pagination\Paginator;
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -80,6 +83,47 @@ class AppServiceProvider extends ServiceProvider
 			\App\Services\Contracts\CategoryServiceInterface::class,
 			\App\Services\CategoryService::class
 		);
+		
+		
+		$this->app->bind(
+			\App\Repositories\Contracts\BranchRepositoryInterface::class,
+			\App\Repositories\BranchRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\BranchServiceInterface::class,
+			\App\Services\BranchService::class
+		);
+
+		$this->app->bind(
+			\App\Repositories\Contracts\BankCashRepositoryInterface::class,
+			\App\Repositories\BankCashRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\BankCashServiceInterface::class,
+			\App\Services\BankCashService::class
+		);
+
+		$this->app->bind(
+			\App\Repositories\Contracts\ThirdPartyRepositoryInterface::class,
+			\App\Repositories\ThirdPartyRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\ThirdPartyServiceInterface::class,
+			\App\Services\ThirdPartyService::class
+		);
+
+        $this->app->bind(
+			\App\Repositories\Contracts\AclRepositoryInterface::class,
+			\App\Repositories\AclRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\AclServiceInterface::class,
+			\App\Services\AclService::class
+		);
 
 	
 	}
@@ -103,6 +147,8 @@ class AppServiceProvider extends ServiceProvider
 			// Check permission
 			return $rbac->hasPermission($user, $ability);
 		});
+		
+		Paginator::useBootstrapFive();
 	}
 
 }

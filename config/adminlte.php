@@ -30,8 +30,8 @@ return [
     |
     */
 
-    'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'use_webp_only' => true,
+    'use_full_favicon' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>Counter Sale</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'vendor/adminlte/dist/img/counterSale.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/counterSale.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/counterSale.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -320,7 +320,7 @@ return [
         [
             'text' => 'pages',
             'url' => 'admin/cms',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'far fa-fw fa-circle',
             'label' => 4,
             'label_color' => 'success',
 			'can'  => 'cms.view',
@@ -328,7 +328,7 @@ return [
 		[
             'text' => 'Warehouse',
             'url' => 'admin/warehouse',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'far fa-fw fa-circle',
             'label_color' => 'success',
 			'can'  => 'warehouse.view',
         ],
@@ -336,24 +336,52 @@ return [
 		[
             'text' => 'Role',
             'url' => 'admin/rbac/roles',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'far fa-fw fa-circle',
             'label_color' => 'success',
 			'can'  => 'roles.manage',
         ],
 		[
+            'text' => 'ACL',
+            'url' => 'admin/acl',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'acl.view',
+        ],
+		[
             'text' => 'User',
             'url' => 'admin/users',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'far fa-fw fa-circle',
             'label_color' => 'success',
 			'can'  => 'users.view',
         ],
 		[
             'text' => 'Category',
             'url' => 'admin/category',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'far fa-fw fa-circle',
             'label_color' => 'success',
 			'can'  => 'category.view',
-        ],		
+        ],
+        [
+            'text' => 'Branch',
+            'url' => 'admin/branch',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'branch.view',
+        ],
+        [
+            'text' => 'Bank Cash',
+            'url' => 'admin/bank-cash',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'bank-cash.view',
+        ],
+        [
+            'text' => 'Third Party',
+            'url' => 'admin/third-party',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'third-party.view',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -365,6 +393,7 @@ return [
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
+		/*
         [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
@@ -419,6 +448,7 @@ return [
             'icon_color' => 'cyan',
             'url' => '#',
         ],
+		*/
     ],
 
     /*

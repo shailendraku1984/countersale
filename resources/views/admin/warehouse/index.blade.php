@@ -18,6 +18,24 @@
         </a>
         @endcan
     </div>
+	
+	
+	<form method="GET">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <input type="text"  name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit"  class="btn btn-primary">Search</button>
+        </div>
+
+    </div>
+
+    </form>
+
 
     <table class="table table-bordered">
 

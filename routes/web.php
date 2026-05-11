@@ -12,7 +12,10 @@ use App\Http\Controllers\Admin\Rbac\RoleManagementController;
 use App\Http\Controllers\Admin\Rbac\UserRoleController;
 
 use App\Http\Controllers\Admin\CategoryController;
-
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\AclController;
+use App\Http\Controllers\Admin\BankCashController;
+use App\Http\Controllers\Admin\ThirdPartyController;
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -29,19 +32,20 @@ Route::prefix('admin')
         |--------------------------------------------------------------------------
         */
 
-        Route::get(
-            '/dashboard',
-            [DashboardController::class, 'index']
-        )
+        Route::get('/dashboard',[DashboardController::class, 'index'])
         ->middleware('can:dashboard.view')
         ->name('admin.dashboard');
-
+		 
+		
+		 
         /*
         |--------------------------------------------------------------------------
         | Profile
         |--------------------------------------------------------------------------
         */
-
+		
+		 
+		/* 
         Route::get(
             '/profile',
             [ProfileController::class, 'edit']
@@ -51,7 +55,22 @@ Route::prefix('admin')
             '/profile',
             [ProfileController::class, 'update']
         )->name('admin.profile.update');
+		*/
+		
+		
+		
+		Route::get('/profile',[ProfileController::class, 'edit'])
+			->name('admin.profile.edit');
 
+		Route::patch('/profile',[ProfileController::class, 'update']
+		)->name('admin.profile.update');
+        
+		/*		
+		Route::delete('/profile',[ProfileController::class, 'destroy'])
+		->name('admin.profile.destroy');
+        */
+		
+		
         /*
         |--------------------------------------------------------------------------
         | Users Module
@@ -401,9 +420,148 @@ Route::prefix('admin')
         ->name('destroy');
 
     });
+
+		/*
+		|--------------------------------------------------------------------------
+		| branch
+		|--------------------------------------------------------------------------
+		*/
+
+	Route::prefix('branch')
+    ->name('admin.branch.')
+    ->group(function () {
+
+        Route::get('/',[BranchController::class, 'index'])
+        ->middleware('can:branch.view')
+        ->name('index');
+
+        Route::get('/create',[BranchController::class, 'create'])
+        ->middleware('can:branch.create')
+        ->name('create');
+
+        Route::post('/',[BranchController::class, 'store'])
+        ->middleware('can:branch.create')
+        ->name('store');
+
+        Route::get('/{branch}/edit',[BranchController::class, 'edit'])
+        ->middleware('can:branch.edit')
+        ->name('edit');
+
+        Route::put('/{branch}',[BranchController::class, 'update'])
+        ->middleware('can:branch.edit')
+        ->name('update');
+
+        Route::delete('/{branch}',[BranchController::class, 'destroy'])
+        ->middleware('can:branch.delete')
+        ->name('destroy');
+
+        Route::get('/states/{countryId}',[BranchController::class, 'getStates']);
+
+        Route::get('/cities/{stateId}',[BranchController::class, 'getCities']
+        );
+
+    });
+	
+	
+	Route::prefix('acl')
+	->name('admin.acl.')
+    ->group(function () {
+
+        Route::get('/',[AclController::class, 'index'])
+        ->middleware('can:acl.view')
+        ->name('index');
+    });
+
+	/*
+	|--------------------------------------------------------------------------
+	| bank cash
+	|--------------------------------------------------------------------------
+	*/
+
+	Route::prefix('bank-cash')
+	->name('admin.bank-cash.')
+	->group(function () {
+
+		Route::get('/',[BankCashController::class, 'index'])
+		->middleware('can:bank-cash.view')
+		->name('index');
+
+		Route::get('/create',[BankCashController::class, 'create'])
+		->middleware('can:bank-cash.create')
+		->name('create');
+
+		Route::post('/',[BankCashController::class, 'store'])
+		->middleware('can:bank-cash.create')
+		->name('store');
+
+		Route::get('/{bankCash}/edit',[BankCashController::class, 'edit'])
+		->middleware('can:bank-cash.edit')
+		->name('edit');
+
+		Route::put('/{bankCash}',[BankCashController::class, 'update'])
+		->middleware('can:bank-cash.edit')
+		->name('update');
+
+		Route::delete('/{bankCash}',[BankCashController::class, 'destroy'])
+		->middleware('can:bank-cash.delete')
+		->name('destroy');
+
+		Route::get('/states/{countryId}',[BankCashController::class, 'getStates'])
+		->middleware('can:bank-cash.view')
+		->name('states');
+
+		Route::get('/cities/{stateId}',[BankCashController::class, 'getCities'])
+		->middleware('can:bank-cash.view')
+		->name('cities');
+	});
+
+	/*
+	|--------------------------------------------------------------------------
+	| third party
+	|--------------------------------------------------------------------------
+	*/
+
+	Route::prefix('third-party')
+	->name('admin.third-party.')
+	->group(function () {
+
+		Route::get('/',[ThirdPartyController::class, 'index'])
+		->middleware('can:third-party.view')
+		->name('index');
+
+		Route::get('/create',[ThirdPartyController::class, 'create'])
+		->middleware('can:third-party.create')
+		->name('create');
+
+		Route::post('/',[ThirdPartyController::class, 'store'])
+		->middleware('can:third-party.create')
+		->name('store');
+
+		Route::get('/{thirdParty}/edit',[ThirdPartyController::class, 'edit'])
+		->middleware('can:third-party.edit')
+		->name('edit');
+
+		Route::put('/{thirdParty}',[ThirdPartyController::class, 'update'])
+		->middleware('can:third-party.edit')
+		->name('update');
+
+		Route::delete('/{thirdParty}',[ThirdPartyController::class, 'destroy'])
+		->middleware('can:third-party.delete')
+		->name('destroy');
+
+		Route::get('/states/{countryId}',[ThirdPartyController::class, 'getStates'])
+		->middleware('can:third-party.view')
+		->name('states');
+
+		Route::get('/cities/{stateId}',[ThirdPartyController::class, 'getCities'])
+		->middleware('can:third-party.view')
+		->name('cities');
+	});
+	
 	
 
     });
+
 
 /*
 |--------------------------------------------------------------------------

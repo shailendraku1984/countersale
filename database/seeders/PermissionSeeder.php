@@ -114,6 +114,58 @@ class PermissionSeeder extends Seeder
                 'module' => 'cms',
             ],
 
+            /*
+            |--------------------------------------------------------------------------
+            | Bank Cash
+            |--------------------------------------------------------------------------
+            */
+
+            [
+                'name' => 'bank-cash.view',
+                'module' => 'bank-cash',
+            ],
+
+            [
+                'name' => 'bank-cash.create',
+                'module' => 'bank-cash',
+            ],
+
+            [
+                'name' => 'bank-cash.edit',
+                'module' => 'bank-cash',
+            ],
+
+            [
+                'name' => 'bank-cash.delete',
+                'module' => 'bank-cash',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Third Party
+            |--------------------------------------------------------------------------
+            */
+
+            [
+                'name' => 'third-party.view',
+                'module' => 'third-party',
+            ],
+
+            [
+                'name' => 'third-party.create',
+                'module' => 'third-party',
+            ],
+
+            [
+                'name' => 'third-party.edit',
+                'module' => 'third-party',
+            ],
+
+            [
+                'name' => 'third-party.delete',
+                'module' => 'third-party',
+            ],
+
         ];
 
         foreach ($permissions as $permission) {
