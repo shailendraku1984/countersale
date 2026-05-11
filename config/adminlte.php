@@ -382,6 +382,20 @@ return [
             'label_color' => 'success',
 			'can'  => 'third-party.view',
         ],
+        [
+            'text' => 'Products',
+            'url' => 'admin/products',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'products.view',
+        ],
+        [
+            'text' => 'Expenses',
+            'url' => 'admin/expenses',
+            'icon' => 'far fa-fw fa-circle',
+            'label_color' => 'success',
+			'can'  => 'expenses.view',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

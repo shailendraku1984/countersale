@@ -115,6 +115,26 @@ class AppServiceProvider extends ServiceProvider
 			\App\Services\ThirdPartyService::class
 		);
 
+		$this->app->bind(
+			\App\Repositories\Contracts\ProductRepositoryInterface::class,
+			\App\Repositories\ProductRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\ProductServiceInterface::class,
+			\App\Services\ProductService::class
+		);
+
+		$this->app->bind(
+			\App\Repositories\Contracts\ExpenseRepositoryInterface::class,
+			\App\Repositories\ExpenseRepository::class
+		);
+
+		$this->app->bind(
+			\App\Services\Contracts\ExpenseServiceInterface::class,
+			\App\Services\ExpenseService::class
+		);
+
         $this->app->bind(
 			\App\Repositories\Contracts\AclRepositoryInterface::class,
 			\App\Repositories\AclRepository::class

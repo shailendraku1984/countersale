@@ -166,6 +166,58 @@ class PermissionSeeder extends Seeder
                 'module' => 'third-party',
             ],
 
+            /*
+            |--------------------------------------------------------------------------
+            | Products
+            |--------------------------------------------------------------------------
+            */
+
+            [
+                'name' => 'products.view',
+                'module' => 'products',
+            ],
+
+            [
+                'name' => 'products.create',
+                'module' => 'products',
+            ],
+
+            [
+                'name' => 'products.edit',
+                'module' => 'products',
+            ],
+
+            [
+                'name' => 'products.delete',
+                'module' => 'products',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Expenses
+            |--------------------------------------------------------------------------
+            */
+
+            [
+                'name' => 'expenses.view',
+                'module' => 'expenses',
+            ],
+
+            [
+                'name' => 'expenses.create',
+                'module' => 'expenses',
+            ],
+
+            [
+                'name' => 'expenses.edit',
+                'module' => 'expenses',
+            ],
+
+            [
+                'name' => 'expenses.delete',
+                'module' => 'expenses',
+            ],
+
         ];
 
         foreach ($permissions as $permission) {

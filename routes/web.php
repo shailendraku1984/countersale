@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\AclController;
 use App\Http\Controllers\Admin\BankCashController;
 use App\Http\Controllers\Admin\ThirdPartyController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ExpenseController;
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -556,6 +558,76 @@ Route::prefix('admin')
 		Route::get('/cities/{stateId}',[ThirdPartyController::class, 'getCities'])
 		->middleware('can:third-party.view')
 		->name('cities');
+	});
+
+	/*
+	|--------------------------------------------------------------------------
+	| products
+	|--------------------------------------------------------------------------
+	*/
+
+	Route::prefix('products')
+	->name('admin.products.')
+	->group(function () {
+
+		Route::get('/',[ProductController::class, 'index'])
+		->middleware('can:products.view')
+		->name('index');
+
+		Route::get('/create',[ProductController::class, 'create'])
+		->middleware('can:products.create')
+		->name('create');
+
+		Route::post('/',[ProductController::class, 'store'])
+		->middleware('can:products.create')
+		->name('store');
+
+		Route::get('/{product}/edit',[ProductController::class, 'edit'])
+		->middleware('can:products.edit')
+		->name('edit');
+
+		Route::put('/{product}',[ProductController::class, 'update'])
+		->middleware('can:products.edit')
+		->name('update');
+
+		Route::delete('/{product}',[ProductController::class, 'destroy'])
+		->middleware('can:products.delete')
+		->name('destroy');
+	});
+
+	/*
+	|--------------------------------------------------------------------------
+	| expenses
+	|--------------------------------------------------------------------------
+	*/
+
+	Route::prefix('expenses')
+	->name('admin.expenses.')
+	->group(function () {
+
+		Route::get('/',[ExpenseController::class, 'index'])
+		->middleware('can:expenses.view')
+		->name('index');
+
+		Route::get('/create',[ExpenseController::class, 'create'])
+		->middleware('can:expenses.create')
+		->name('create');
+
+		Route::post('/',[ExpenseController::class, 'store'])
+		->middleware('can:expenses.create')
+		->name('store');
+
+		Route::get('/{expense}/edit',[ExpenseController::class, 'edit'])
+		->middleware('can:expenses.edit')
+		->name('edit');
+
+		Route::put('/{expense}',[ExpenseController::class, 'update'])
+		->middleware('can:expenses.edit')
+		->name('update');
+
+		Route::delete('/{expense}',[ExpenseController::class, 'destroy'])
+		->middleware('can:expenses.delete')
+		->name('destroy');
 	});
 	
 	
