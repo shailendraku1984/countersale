@@ -1,1 +1,4 @@
-<img src="vendor/adminlte/dist/img/counterSale.png" alt="counterSale">
+<img src="{{ url('vendor/adminlte/dist/img/counterSale.png') }}/" alt="counterSale">
+
+
+

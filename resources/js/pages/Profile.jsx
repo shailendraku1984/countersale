@@ -39,19 +39,23 @@ export default function Profile() {
 
     const logout = async () => {
 
-        try {
+		try {
 
-            await api.post('/logout');
+			await api.post('/logout');
 
-        } catch (error) {
+		} catch (error) {
 
-            console.log(error);
-        }
+			console.log(error);
 
-        localStorage.removeItem('token');
+		} finally {
 
-        navigate('/login');
-    };
+			localStorage.removeItem('token');
+
+			localStorage.removeItem('user');
+
+			window.location.href = '/login';
+		}
+	};
 
     if (loading) {
 

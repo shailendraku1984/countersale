@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
@@ -24,6 +25,18 @@ use App\Http\Controllers\Admin\ExpenseController;
 |--------------------------------------------------------------------------
 */
 
+Route::prefix('admin')->group(function () {
+
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+
+});
+
 Route::prefix('admin')
     ->middleware(['auth'])
     ->group(function () {
@@ -37,41 +50,20 @@ Route::prefix('admin')
         Route::get('/dashboard',[DashboardController::class, 'index'])
         ->middleware('can:dashboard.view')
         ->name('admin.dashboard');
-		 
-		
+		  
 		 
         /*
         |--------------------------------------------------------------------------
         | Profile
         |--------------------------------------------------------------------------
         */
-		
 		 
-		/* 
-        Route::get(
-            '/profile',
-            [ProfileController::class, 'edit']
-        )->name('admin.profile.edit');
-
-        Route::post(
-            '/profile',
-            [ProfileController::class, 'update']
-        )->name('admin.profile.update');
-		*/
-		
-		
-		
 		Route::get('/profile',[ProfileController::class, 'edit'])
 			->name('admin.profile.edit');
 
 		Route::patch('/profile',[ProfileController::class, 'update']
 		)->name('admin.profile.update');
-        
-		/*		
-		Route::delete('/profile',[ProfileController::class, 'destroy'])
-		->name('admin.profile.destroy');
-        */
-		
+         
 		
         /*
         |--------------------------------------------------------------------------
@@ -641,10 +633,4 @@ Route::prefix('admin')
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-
-    return view('welcome');
-
-});
-
-require __DIR__.'/auth.php';
+Route::view('/{any}', 'app')->where('any', '.*');

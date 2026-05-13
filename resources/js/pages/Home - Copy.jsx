@@ -1,49 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import MainLayout from '../layouts/MainLayout';
 import ProductCard from '../components/ProductCard';
-
-import api from '../services/api';
-
 export default function Home() {
+	
+    const products = [
 
-    const [products, setProducts] = useState([]);
+        {
+            id: 1,
+            name: 'Apple iPhone 15',
+            price: 79999,
+            description: 'Latest Apple smartphone with powerful performance.',
+            image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop',
+        },
 
-    const [loading, setLoading] = useState(true);
+        {
+            id: 2,
+            name: 'Samsung Galaxy S25',
+            price: 74999,
+            description: 'Premium Android flagship device for modern users.',
+            image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=1200&auto=format&fit=crop',
+        },
 
-    useEffect(() => { fetchProducts(); }, []);
+        {
+            id: 3,
+            name: 'Sony Headphones',
+            price: 12999,
+            description: 'Noise cancellation wireless headphones.',
+            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop',
+        },
 
-    const fetchProducts = async () => {
+        {
+            id: 4,
+            name: 'Smart Watch',
+            price: 9999,
+            description: 'Track your health and daily activity.',
+            image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop',
+        },
 
-        try {
-
-            const response = await api.get('/products');
-
-            setProducts(response.data.products);
-
-        } catch (error) {
-
-            console.log(error);
-
-        } finally {
-
-            setLoading(false);
-        }
-    };
-
-    if (loading) {
-
-        return (
-
-            <div className="min-h-screen flex items-center justify-center">
-
-                <div className="text-xl font-semibold">
-                    Loading products...
-                </div>
-
-            </div>
-        );
-    }
+    ];
 
     return (
 

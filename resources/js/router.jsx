@@ -10,6 +10,8 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
 
 function PrivateRoute({ children }) {
 
@@ -36,6 +38,8 @@ export default function Router() {
                     element={<Login />}
                 />
 
+                <Route path="/products" element={<Products />}/>
+
                 <Route
                     path="/profile"
                     element={
@@ -44,6 +48,16 @@ export default function Router() {
                         </PrivateRoute>
                     }
                 />
+				
+				
+				<Route
+                    path="/products/:id"
+                    element={
+                            <ProductDetails />
+                    }
+                />
+				
+				
 
             </Routes>
 
