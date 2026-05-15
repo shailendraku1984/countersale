@@ -12,6 +12,8 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+
 
 function PrivateRoute({ children }) {
 
@@ -39,6 +41,8 @@ export default function Router() {
                 />
 
                 <Route path="/products" element={<Products />}/>
+                
+				<Route path="/cart" element={<Cart />}/>
 
                 <Route
                     path="/profile"
@@ -57,7 +61,13 @@ export default function Router() {
                     }
                 />
 				
-				
+				<Route
+                    path="/cart"
+                    element={
+                            <Cart />
+                    }
+                />
+ 				
 
             </Routes>
 

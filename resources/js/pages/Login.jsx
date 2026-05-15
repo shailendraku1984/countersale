@@ -1,6 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
 import api from '../services/api';
 
 export default function Login() {
@@ -16,12 +17,25 @@ export default function Login() {
 
     const [error, setError] = useState('');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Input Change
+    |--------------------------------------------------------------------------
+    */
+
     const handleChange = (e) => {
+
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
     };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Login
+    |--------------------------------------------------------------------------
+    */
 
     const handleSubmit = async (e) => {
 
@@ -33,15 +47,88 @@ export default function Login() {
 
         try {
 
+            /*
+            |--------------------------------------------------------------------------
+            | Login API
+            |--------------------------------------------------------------------------
+            */
+
             const response = await api.post('/login', form);
 
-            localStorage.setItem('token', response.data.token);
+            /*
+            |--------------------------------------------------------------------------
+            | Store Token
+            |--------------------------------------------------------------------------
+            */
+
+            const token = response.data.token;
+
+			/*
+			|--------------------------------------------------------------------------
+			| Store Token
+			|--------------------------------------------------------------------------
+			*/
+
+			localStorage.setItem('token', token);
+
+			/*
+			|--------------------------------------------------------------------------
+			| Attach Token To Axios
+			|--------------------------------------------------------------------------
+			*/
+
+			api.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${token}`;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Sync Guest Cart
+            |--------------------------------------------------------------------------
+            */
+
+            const guestCart = JSON.parse(
+                localStorage.getItem('cart')
+            );
+
+            if (guestCart && guestCart.length > 0) {
+
+                await api.post('/cart/sync', {
+
+                    items: guestCart,
+                });
+
+                /*
+                |--------------------------------------------------------------------------
+                | Clear Guest Cart
+                |--------------------------------------------------------------------------
+                */
+
+                localStorage.removeItem('cart');
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Redirect
+            |--------------------------------------------------------------------------
+            */
 
             navigate('/profile');
 
+            /*
+            |--------------------------------------------------------------------------
+            | Error
+            |--------------------------------------------------------------------------
+            */
+
         } catch (err) {
 
-            setError('Invalid email or password');
+            console.log(err);
+
+			setError(
+				err.response?.data?.message ||
+				'Something went wrong'
+			);
 
         } finally {
 
@@ -70,17 +157,23 @@ export default function Login() {
                 {error && (
 
                     <div className="bg-red-100 text-red-700 px-4 py-3 rounded-lg mb-4">
-                        {error}
-                    </div>
 
+                        {error}
+
+                    </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
+                >
 
                     <div>
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">
+
                             Email
+
                         </label>
 
                         <input
@@ -88,9 +181,9 @@ export default function Login() {
                             name="email"
                             value={form.email}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                             placeholder="admin@admin.com"
                             required
+                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                         />
 
                     </div>
@@ -98,7 +191,9 @@ export default function Login() {
                     <div>
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">
+
                             Password
+
                         </label>
 
                         <input
@@ -106,9 +201,9 @@ export default function Login() {
                             name="password"
                             value={form.password}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                             placeholder="********"
                             required
+                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                         />
 
                     </div>
@@ -119,7 +214,9 @@ export default function Login() {
                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300"
                     >
 
-                        {loading ? 'Please wait...' : 'Login'}
+                        {loading
+                            ? 'Please wait...'
+                            : 'Login'}
 
                     </button>
 
