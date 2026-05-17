@@ -6,7 +6,10 @@ import { useCart } from '../context/CartContext';
 
 import { Link, useNavigate } from 'react-router-dom';
 
+
+
 export default function Cart() {
+ 
 
     const navigate = useNavigate();
 
@@ -16,6 +19,7 @@ export default function Cart() {
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
+		
 
     } = useCart();
 
@@ -27,11 +31,11 @@ export default function Cart() {
 
     const total = cartItems.reduce(
 
-        (sum, item) =>
+    (sum, item) =>
 
-            sum + (item.price * item.quantity),
+        sum + (item.price * item.quantity),
 
-        0
+    0
     );
 
     /*
@@ -47,6 +51,7 @@ export default function Cart() {
         if (token) {
 
             navigate('/checkout');
+			
 
         } else {
 

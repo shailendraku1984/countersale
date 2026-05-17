@@ -6,10 +6,11 @@ import { useCart } from '../context/CartContext';
 
 export default function MainLayout({ children }) {
 	const {cartItems,flashMessage} = useCart();
-
+    //const token = localStorage.getItem('token');
+	
     return (
 
-        <div className="min-h-screen bg-gray-100 flex flex-col">
+        <div className="bg-gray-100 flex flex-col">
             {
 				flashMessage && (
 

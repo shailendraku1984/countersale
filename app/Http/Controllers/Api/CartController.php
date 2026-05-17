@@ -19,65 +19,99 @@ class CartController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index(Request $request)
-    {
-        /*
-        |--------------------------------------------------------------------------
-        | Guest Cart
-        |--------------------------------------------------------------------------
-        */
+    
+	public function index(Request $request)
+	{
+		/*
+		|--------------------------------------------------------------------------
+		| Guest Cart
+		|--------------------------------------------------------------------------
+		*/
 
-        if (!$request->user()) {
+		if (!$request->user()) {
 
-            return response()->json([
-                'status' => true,
-                'cart' => [],
-            ]);
-        }
+			return response()->json([
+				'status' => true,
+				'cart' => [],
+				'total' => 0,
+			]);
+		}
 
-        /*
-        |--------------------------------------------------------------------------
-        | User Cart
-        |--------------------------------------------------------------------------
-        */
+		/*
+		|--------------------------------------------------------------------------
+		| User Cart
+		|--------------------------------------------------------------------------
+		*/
 
-        $cart = Cart::with('items.product')
-            ->where('user_id', $request->user()->id)
-            ->first();
+		$cart = Cart::with('items.product')
+			->where('user_id', $request->user()->id)
+			->first();
 
-        if (!$cart) {
+		if (!$cart) {
 
-            return response()->json([
-                'status' => true,
-                'cart' => [],
-            ]);
-        }
+			return response()->json([
+				'status' => true,
+				'cart' => [],
+				'total' => 0,
+			]);
+		}
 
-        $items = $cart->items->map(function ($item) {
+		$items = $cart->items->map(function ($item) {
 
-            return [
+			return [
 
-                'id' => $item->product->id,
+				'id' => $item->product->id,
 
-                'name' => $item->product->product_name,
+				/*
+				|--------------------------------------------------------------------------
+				| Product Name
+				|--------------------------------------------------------------------------
+				*/
 
-                'price' => $item->price,
+				'name' => $item->product->name,
 
-                'quantity' => $item->quantity,
+				/*
+				|--------------------------------------------------------------------------
+				| Pricing
+				|--------------------------------------------------------------------------
+				*/
 
-                'image' => $item->product->image
-                    ? asset('storage/' . $item->product->image)
-                    : null,
-            ];
-        });
+				'price' => $item->price,
 
-        return response()->json([
+				'quantity' => $item->quantity,
 
-            'status' => true,
+				/*
+				|--------------------------------------------------------------------------
+				| Product Image
+				|--------------------------------------------------------------------------
+				*/
 
-            'cart' => $items,
-        ]);
-    }
+				'image' => $item->product->image
+					? asset('storage/' . $item->product->image)
+					: null,
+			];
+		});
+
+		/*
+		|--------------------------------------------------------------------------
+		| Cart Total
+		|--------------------------------------------------------------------------
+		*/
+
+		$total = $items->sum(function ($item) {
+
+			return $item['price'] * $item['quantity'];
+		});
+
+		return response()->json([
+
+			'status' => true,
+
+			'cart' => $items,
+
+			'total' => $total,
+		]);
+	}
 
 
 	public function add(Request $request)
@@ -105,9 +139,15 @@ class CartController extends Controller
 				'user_id' => $request->user()->id,
 			]);
 
-			$cartItem = CartItem::where('cart_id', $cart->id)
-				->where('product_id', $product->id)
-				->first();
+			$cartItem = CartItem::where(
+				'cart_id',
+				$cart->id
+			)
+			->where(
+				'product_id',
+				$product->id
+			)
+			->first();
 
 			if ($cartItem) {
 
@@ -118,10 +158,10 @@ class CartController extends Controller
 			} else {
 
 				CartItem::create([
-					'cart_id'   => $cart->id,
-					'product_id'=> $product->id,
-					'quantity'  => $request->quantity,
-					'price'     => $product->price,
+					'cart_id' => $cart->id,
+					'product_id' => $product->id,
+					'quantity' => $request->quantity,
+					'price' => $product->price,
 				]);
 			}
 
@@ -148,58 +188,78 @@ class CartController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function sync(Request $request)
-    {
-        $cart = Cart::firstOrCreate([
-            'user_id' => $request->user()->id,
-        ]);
+    
+	public function sync(Request $request)
+	{
+		$request->validate([
+			'items' => 'required|array',
+		]);
 
-        foreach ($request->items as $item) {
+		$cart = Cart::firstOrCreate([
+			'user_id' => $request->user()->id,
+		]);
 
-            $product = Product::find($item['id']);
+		foreach ($request->items as $item) {
 
-            if (!$product) {
-                continue;
-            }
+			$product = Product::find($item['id']);
 
-            $cartItem = CartItem::where(
-                'cart_id',
-                $cart->id
-            )
-            ->where(
-                'product_id',
-                $product->id
-            )
-            ->first();
+			if (!$product) {
+				continue;
+			}
 
-            if ($cartItem) {
+			$cartItem = CartItem::where(
+				'cart_id',
+				$cart->id
+			)
+			->where(
+				'product_id',
+				$product->id
+			)
+			->first();
 
-                $cartItem->quantity += $item['quantity'];
+			/*
+			|--------------------------------------------------------------------------
+			| Update Existing Item
+			|--------------------------------------------------------------------------
+			*/
 
-                $cartItem->save();
+			if ($cartItem) {
 
-            } else {
+				$cartItem->quantity = $item['quantity'];
 
-                CartItem::create([
+				$cartItem->price = $product->price;
 
-                    'cart_id' => $cart->id,
+				$cartItem->save();
 
-                    'product_id' => $product->id,
+			} else {
 
-                    'quantity' => $item['quantity'],
+				/*
+				|--------------------------------------------------------------------------
+				| Create New Item
+				|--------------------------------------------------------------------------
+				*/
 
-                    'price' => $product->price,
-                ]);
-            }
-        }
+				CartItem::create([
 
-        return response()->json([
+					'cart_id' => $cart->id,
 
-            'status' => true,
+					'product_id' => $product->id,
 
-            'message' => 'Cart synced successfully',
-        ]);
-    }
+					'quantity' => $item['quantity'],
+
+					'price' => $product->price,
+				]);
+			}
+		}
+
+		return response()->json([
+
+			'status' => true,
+
+			'message' => 'Cart synced successfully',
+		]);
+	}
+
 	
 	
 	/*
@@ -207,9 +267,21 @@ class CartController extends Controller
 	| Update Quantity
 	|--------------------------------------------------------------------------
 	*/
-
-	public function update(Request $request, $productId)
+    
+    public function update(Request $request, $productId)
 	{
+		$request->validate([
+			'quantity' => 'required|integer|min:1',
+		]);
+
+		if (!$request->user()) {
+
+			return response()->json([
+				'status' => false,
+				'message' => 'Unauthorized',
+			], 401);
+		}
+
 		$cart = Cart::where(
 			'user_id',
 			$request->user()->id
@@ -219,6 +291,7 @@ class CartController extends Controller
 
 			return response()->json([
 				'status' => false,
+				'message' => 'Cart not found',
 			]);
 		}
 
@@ -236,18 +309,19 @@ class CartController extends Controller
 
 			return response()->json([
 				'status' => false,
+				'message' => 'Item not found',
 			]);
 		}
 
-		//$cartItem->quantity = $request->quantity;
-		$request->validate(['quantity' => 'required|integer|min:1',]);
+		$cartItem->quantity = $request->quantity;
 
 		$cartItem->save();
 
 		return $this->index($request);
 	}
 	
-	
+
+ 
 	/*
 |--------------------------------------------------------------------------
 | Remove Item

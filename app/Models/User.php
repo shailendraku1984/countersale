@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\UserAddress;
 
 
 class User extends Authenticatable
@@ -23,9 +24,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+    'name',
+    'email',
+    'phone',
     ];
 
     /**
@@ -55,4 +56,12 @@ class User extends Authenticatable
 	{
 		return $this->belongsToMany(Role::class);
 	}
+	
+	 
+	
+	public function addresses()
+	{
+		return $this->hasMany(UserAddress::class);
+	}
+
 }

@@ -10,12 +10,13 @@ import {
 } from '../utils/cart';
 
 
-export default function Login() {
+export default function Register() {
 
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
         email: '',
+		name: '',
         password: '',
     });
 
@@ -57,11 +58,11 @@ export default function Login() {
 
             /*
             |--------------------------------------------------------------------------
-            | Login API
+            | Register API
             |--------------------------------------------------------------------------
             */
 
-            const response = await api.post('/login', form);
+            const response = await api.post('/register', form);
 
             /*
             |--------------------------------------------------------------------------
@@ -146,21 +147,21 @@ export default function Login() {
     return (
        <MainLayout>
 	   
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+        <div className="max-w-4xl mx-auto px-6 py-12">
 
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-                <div className="text-center mb-8">
+                <div className="bg-indigo-600 px-8 py-8 text-white">
 
-                    <h1 className="text-3xl font-bold text-gray-800">
-                        Welcome Back
-                    </h1>
+					<h1 className="text-3xl font-bold">
+						Create Your Account
+					</h1>
 
-                    <p className="text-gray-500 mt-2">
-                        Login to continue
-                    </p>
+					<p className="mt-2 text-indigo-100">
+						Register to continue shopping
+					</p>
 
-                </div>
+				</div>
 
                 {error && (
 
@@ -171,10 +172,34 @@ export default function Login() {
                     </div>
                 )}
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-5"
-                >
+                
+				<div className="p-8">
+
+					<form
+						onSubmit={handleSubmit}
+						className="grid grid-cols-1 md:grid-cols-2 gap-6"
+					>
+				    
+					<div>
+
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+
+                            Your name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="like Ramesh Kr"
+                            required
+                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        />
+
+                    </div>
+					
 
                     <div>
 
@@ -215,21 +240,47 @@ export default function Login() {
                         />
 
                     </div>
+					
+					
+					<div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300"
-                    >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
 
-                        {loading
-                            ? 'Please wait...'
-                            : 'Login'}
+                            Confirm Password
 
-                    </button>
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password_confirmation"
+                            value={form.password_confirmation}
+                            onChange={handleChange}
+                            placeholder="********"
+                            required
+                            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        />
+
+                    </div>
+					
+					 
+					
+					<div className="md:col-span-2">
+
+						<button
+							type="submit"
+							disabled={loading}
+							className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300"
+						>
+							{loading
+								? 'Please wait...'
+								: 'Create Account'}
+						</button>
+
+					</div>
+
 
                 </form>
-
+              </div>
             </div>
 
         </div>

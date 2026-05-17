@@ -7,27 +7,42 @@ import {
 
 import api from '../services/api';
 
-const CartContext = createContext();
+import {
+    getGuestCart,
+    saveGuestCart,
+    clearGuestCart
+} from '../utils/cart';
 
+const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
 
-	const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
     const [flashMessage, setFlashMessage] = useState('');
-		
+
+    /*
+    |--------------------------------------------------------------------------
+    | Flash Message Helper
+    |--------------------------------------------------------------------------
+    */
+
+    const showFlashMessage = (message) => {
+
+        setFlashMessage(message);
+
+        setTimeout(() => {
+
+            setFlashMessage('');
+
+        }, 3000);
+    };
 
     /*
     |--------------------------------------------------------------------------
     | Load Cart
     |--------------------------------------------------------------------------
     */
-
-    useEffect(() => {
-
-        loadCart();
-
-    }, []);
 
     const loadCart = async () => {
 
@@ -37,7 +52,7 @@ export const CartProvider = ({ children }) => {
 
             /*
             |--------------------------------------------------------------------------
-            | Logged In User
+            | Logged-in User
             |--------------------------------------------------------------------------
             */
 
@@ -46,7 +61,6 @@ export const CartProvider = ({ children }) => {
                 const response = await api.get('/cart');
 
                 setCartItems(response.data.cart || []);
-				
 
             } else {
 
@@ -56,24 +70,30 @@ export const CartProvider = ({ children }) => {
                 |--------------------------------------------------------------------------
                 */
 
-                const guestCart = JSON.parse(
-                    localStorage.getItem('cart')
-                ) || [];
+                const guestCart = getGuestCart();
 
                 setCartItems(guestCart);
-				setFlashMessage('Product added to cart');
-				setTimeout(() => {
-
-				setFlashMessage('');
-
-			}, 3000);
             }
 
         } catch (error) {
 
             console.error(error);
+
+            setCartItems([]);
         }
     };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Load
+    |--------------------------------------------------------------------------
+    */
+
+    useEffect(() => {
+
+        loadCart();
+
+    }, []);
 
     /*
     |--------------------------------------------------------------------------
@@ -89,25 +109,21 @@ export const CartProvider = ({ children }) => {
 
             /*
             |--------------------------------------------------------------------------
-            | Logged In User
+            | Logged-in User
             |--------------------------------------------------------------------------
             */
 
             if (token) {
 
-                const response = await api.post('/cart/add', {
+                const response = await api.post(
+                    '/cart/add',
+                    {
+                        product_id: product.id,
+                        quantity: 1,
+                    }
+                );
 
-                    product_id: product.id,
-                    quantity: 1,
-                });
-
-                setCartItems(response.data.cart);
-				setFlashMessage('Product added to cart');
-				setTimeout(() => {
-
-					setFlashMessage('');
-
-				}, 3000);
+                setCartItems(response.data.cart || []);
 
             } else {
 
@@ -117,9 +133,7 @@ export const CartProvider = ({ children }) => {
                 |--------------------------------------------------------------------------
                 */
 
-                let cart = JSON.parse(
-                    localStorage.getItem('cart')
-                ) || [];
+                let cart = getGuestCart();
 
                 const existingItem = cart.find(
                     item => item.id === product.id
@@ -137,12 +151,75 @@ export const CartProvider = ({ children }) => {
                     });
                 }
 
-                localStorage.setItem(
-                    'cart',
-                    JSON.stringify(cart)
-                );
+                saveGuestCart(cart);
 
                 setCartItems(cart);
+            }
+
+            showFlashMessage('Product added to cart');
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Increase Quantity
+    |--------------------------------------------------------------------------
+    */
+
+    const increaseQuantity = async (id) => {
+
+        try {
+
+            const token = localStorage.getItem('token');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Logged-in User
+            |--------------------------------------------------------------------------
+            */
+
+            if (token) {
+
+                const item = cartItems.find(
+                    item => item.id === id
+                );
+
+                const response = await api.put(
+                    `/cart/update/${id}`,
+                    {
+                        quantity: item.quantity + 1,
+                    }
+                );
+
+                setCartItems(response.data.cart || []);
+
+            } else {
+
+                /*
+                |--------------------------------------------------------------------------
+                | Guest User
+                |--------------------------------------------------------------------------
+                */
+
+                const updatedCart = cartItems.map((item) =>
+
+                    item.id === id
+
+                        ? {
+                            ...item,
+                            quantity: item.quantity + 1,
+                        }
+
+                        : item
+                );
+
+                saveGuestCart(updatedCart);
+
+                setCartItems(updatedCart);
             }
 
         } catch (error) {
@@ -150,176 +227,175 @@ export const CartProvider = ({ children }) => {
             console.error(error);
         }
     };
-	
-	
-	const increaseQuantity = async (id) => {
-
-    const token = localStorage.getItem('token');
 
     /*
     |--------------------------------------------------------------------------
-    | Logged In User
+    | Decrease Quantity
     |--------------------------------------------------------------------------
     */
 
-    if (token) {
+    const decreaseQuantity = async (id) => {
 
-        const item = cartItems.find(
-            item => item.id === id
-        );
+        try {
 
-        const response = await api.put(
+            const token = localStorage.getItem('token');
 
-            `/cart/update/${id}`,
+            const item = cartItems.find(
+                item => item.id === id
+            );
 
-            {
-                quantity: item.quantity + 1,
+            if (!item || item.quantity <= 1) {
+                return;
             }
-        );
 
-        setCartItems(response.data.cart);
+            /*
+            |--------------------------------------------------------------------------
+            | Logged-in User
+            |--------------------------------------------------------------------------
+            */
 
-    } else {
+            if (token) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Guest User
-        |--------------------------------------------------------------------------
-        */
+                const response = await api.put(
+                    `/cart/update/${id}`,
+                    {
+                        quantity: item.quantity - 1,
+                    }
+                );
 
-        const updatedCart = cartItems.map((item) =>
+                setCartItems(response.data.cart || []);
 
-            item.id === id
+            } else {
 
-                ? {
-                    ...item,
-                    quantity: item.quantity + 1,
-                }
+                /*
+                |--------------------------------------------------------------------------
+                | Guest User
+                |--------------------------------------------------------------------------
+                */
 
-                : item
-        );
+                const updatedCart = cartItems.map((item) =>
 
-        localStorage.setItem(
-            'cart',
-            JSON.stringify(updatedCart)
-        );
+                    item.id === id
 
-        setCartItems(updatedCart);
-    }
-};
+                        ? {
+                            ...item,
+                            quantity: item.quantity - 1,
+                        }
 
-const decreaseQuantity = async (id) => {
+                        : item
+                );
 
-    const token = localStorage.getItem('token');
+                saveGuestCart(updatedCart);
 
-    const item = cartItems.find(
-        item => item.id === id
-    );
-
-    if (item.quantity <= 1) {
-        return;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Logged In User
-    |--------------------------------------------------------------------------
-    */
-
-    if (token) {
-
-        const response = await api.put(
-
-            `/cart/update/${id}`,
-
-            {
-                quantity: item.quantity - 1,
+                setCartItems(updatedCart);
             }
-        );
 
-        setCartItems(response.data.cart);
+        } catch (error) {
 
-    } else {
-
-        /*
-        |--------------------------------------------------------------------------
-        | Guest User
-        |--------------------------------------------------------------------------
-        */
-
-        const updatedCart = cartItems.map((item) =>
-
-            item.id === id
-
-                ? {
-                    ...item,
-                    quantity: item.quantity - 1,
-                }
-
-                : item
-        );
-
-        localStorage.setItem(
-            'cart',
-            JSON.stringify(updatedCart)
-        );
-
-        setCartItems(updatedCart);
-    }
-};
-
-const removeFromCart = async (id) => {
-
-    const token = localStorage.getItem('token');
+            console.error(error);
+        }
+    };
 
     /*
     |--------------------------------------------------------------------------
-    | Logged In User
+    | Remove From Cart
     |--------------------------------------------------------------------------
     */
 
-    if (token) {
+    const removeFromCart = async (id) => {
 
-        const response = await api.delete(
-            `/cart/remove/${id}`
-        );
+        try {
 
-        setCartItems(response.data.cart);
+            const token = localStorage.getItem('token');
 
-    } else {
+            /*
+            |--------------------------------------------------------------------------
+            | Logged-in User
+            |--------------------------------------------------------------------------
+            */
 
-        /*
-        |--------------------------------------------------------------------------
-        | Guest User
-        |--------------------------------------------------------------------------
-        */
+            if (token) {
 
-        const updatedCart = cartItems.filter(
-            item => item.id !== id
-        );
+                const response = await api.delete(
+                    `/cart/remove/${id}`
+                );
 
-        localStorage.setItem(
-            'cart',
-            JSON.stringify(updatedCart)
-        );
+                setCartItems(response.data.cart || []);
 
-        setCartItems(updatedCart);
-    }
-};
+            } else {
 
+                /*
+                |--------------------------------------------------------------------------
+                | Guest User
+                |--------------------------------------------------------------------------
+                */
+
+                const updatedCart = cartItems.filter(
+                    item => item.id !== id
+                );
+
+                saveGuestCart(updatedCart);
+
+                setCartItems(updatedCart);
+            }
+
+            showFlashMessage('Product removed from cart');
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logout Cart Backup
+    |--------------------------------------------------------------------------
+    */
+
+    const backupCartToGuest = async () => {
+
+        try {
+
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                return;
+            }
+
+            const response = await api.get('/cart');
+
+            const guestCart = response.data.cart || [];
+
+            saveGuestCart(guestCart);
+
+            setCartItems(guestCart);
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    };
 
     return (
 
         <CartContext.Provider
             value={{
+
                 cartItems,
                 setCartItems,
+
                 addToCart,
+                increaseQuantity,
+                decreaseQuantity,
+                removeFromCart,
+
                 loadCart,
-				increaseQuantity,
-				decreaseQuantity,
-				removeFromCart,
-				flashMessage,
+                backupCartToGuest,
+
+                flashMessage,
+
+                clearGuestCart,
             }}
         >
 
