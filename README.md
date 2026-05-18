@@ -1,60 +1,287 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 12 + React Ecommerce Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Overview
 
-## About Laravel
+This project is a full-stack ecommerce application developed using Laravel 12 API backend and React frontend architecture.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The application was built from a real-world ecommerce workflow perspective with focus on:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Scalable architecture
+* Security best practices
+* Maintainability
+* Reusability
+* Extendability
+* RBAC (Role Based Access Control)
+* RESTful API development
+* Modern frontend integration
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The objective of this project was not only feature implementation but also understanding modern software engineering practices and enterprise-level application structure.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+# Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Backend
 
-## Laravel Sponsors
+* PHP 8+
+* Laravel 12
+* MySQL
+* REST APIs
+* RBAC Permission System
+* Laravel Validation
+* Eloquent ORM
+* Middleware Authorization
+* File Upload Management
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Frontend
 
-### Premium Partners
+* React
+* Vite
+* React Router DOM
+* Axios
+* Tailwind CSS
+* React Helmet Async
+* DOMPurify
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+# Core Features
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Authentication & Authorization
 
-## Code of Conduct
+* User Login
+* User Registration
+* Protected Routes
+* Token Based Authentication
+* Role Based Access Control (RBAC)
+* Permission Based Modules & Actions
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+# Admin Panel Features
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## User Management
 
-## License
+* Create User
+* Update User
+* Delete User
+* User Listing
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# countersale" 
+## Role & Permission Management
+
+* Role Creation
+* Permission Assignment
+* Dynamic Access Control
+* Module Action Permissions
+
+## Category Management
+
+* Create Category
+* Update Category
+* Delete Category
+
+## Product Management
+
+* Product CRUD
+* Product Image Upload
+* Product Status Management
+* Product Listing
+
+## CMS Management
+
+* Dynamic CMS Pages
+* SEO Meta Fields
+* Slug Based Pages
+
+## Order Management
+
+* Order Listing
+* Order Status Management
+* Customer Order Tracking
+
+---
+
+# Frontend Features
+
+## Ecommerce Features
+
+* Product Listing
+* Product Detail Page
+* Add To Cart
+* Quantity Management
+* Guest Cart Support
+* User Cart Support
+* Checkout Flow
+* Order Placement
+
+## CMS Integration
+
+* Dynamic CMS Routing
+* SEO Friendly Pages
+* Dynamic Meta Tags
+* Sanitized HTML Rendering
+
+---
+
+# Security Considerations
+
+The application was developed with focus on secure coding practices including:
+
+* Request Validation
+* RBAC Authorization
+* Middleware Protection
+* Sanitized CMS Rendering using DOMPurify
+* Protected Admin Routes
+* Controlled File Upload Handling
+* Secure API Structure
+
+---
+
+# Architecture Highlights
+
+* RESTful API architecture
+* Headless backend approach
+* Reusable React components
+* Modular backend structure
+* Dynamic CMS implementation
+* Service-oriented frontend API integration
+* Maintainable folder structure
+* Separation of concerns
+
+---
+
+# Folder Structure
+
+## Backend
+
+```text
+app/
+routes/
+database/
+resources/
+```
+
+## Frontend
+
+```text
+resources/js/
+├── admin/
+├── components/
+├── context/
+├── layouts/
+├── pages/
+├── services/
+├── routes/
+```
+
+---
+
+# Installation Steps
+
+## Backend Setup
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+```
+
+### Install Dependencies
+
+```bash
+composer install
+```
+
+### Environment Setup
+
+```bash
+cp .env.example .env
+```
+
+### Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### Run Migration
+
+```bash
+php artisan migrate
+```
+
+### Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### Start Laravel Server
+
+```bash
+php artisan serve
+```
+
+---
+
+# Frontend Setup
+
+## Install Node Modules
+
+```bash
+npm install
+```
+
+## Start Vite Development Server
+
+```bash
+npm run dev
+```
+
+---
+
+# Application Goals
+
+This project was developed as a practical architecture modernization exercise by rebuilding a real-world ecommerce workflow using Laravel 12 and React while focusing on:
+
+* Modern API architecture
+* Secure application development
+* Scalable frontend/backend separation
+* Maintainable code structure
+* Enterprise-level RBAC implementation
+
+---
+
+# Future Improvements
+
+* Payment Gateway Integration
+* Invoice Generation
+* Order Email Notifications
+* Queue & Job Processing
+* Advanced Product Filters
+* Wishlist Module
+* Unit & Feature Testing
+* API Versioning
+* Performance Optimization
+* Caching Layer
+
+---
+
+# Learning Outcome
+
+This project significantly improved practical understanding of:
+
+* Laravel API architecture
+* React frontend integration
+* RBAC implementation
+* Secure coding practices
+* Modular application structure
+* Ecommerce workflow design
+* Frontend/backend communication
+* CMS driven content rendering
+
+---
+
+# Author
+
+Developed as a self-initiated full-stack ecommerce architecture project using Laravel 12 and React.
